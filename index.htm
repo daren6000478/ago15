@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function traslacion(){
+            //leer datos de vo
+            var aos = document.getElementById('ao').value;
+            aos = aos.split(',')//redefine ao como arreglo 
+            aon= [];//crea array aon vacio
+            aos.forEach((elemento) => {
+                aon.push(Number(elemento))
+            });
+            
+            alert(aon[0] + aon[1] + aon[2]);
+        }
+    </script>
+</head>
+<body>
+    <p>vector original  <input size=12 id="ao"/></p><!--vector original-->
+    <p>vector traslacion  <input size=12 id="ai"/></p>
+    <p>vector trasladado <input size=12 id="ar"/></p>
+<button id="btn_tr" onclick="traslacion()">realizar traslacion</button>
+</body>
+</html>
