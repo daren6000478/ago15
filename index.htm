@@ -5,15 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script>
+        function byId(id){
+            return document.getElementById(id).value
+        }
+        function strarr2num(strarr,lim){
+            arrs = strarr.split(lim)
+            arrn= [];//crea array aon vacio
+            arrs.forEach((elemento) => {
+                aon.push(Number(elemento))
+            });
+            return arrn;
+
+        }
+        function sum(array1,array2){
+           return array1.map(function(num,idx){
+            return num + array2[idx]; 
+        })
+        }
         function traslacion(){
             //leer datos de vo
             var aos = document.getElementById('ao').value;
-            aos = aos.split(',')//redefine ao como arreglo 
-            aon= [];//crea array aon vacio
-            aos.forEach((elemento) => {
-                aon.push(Number(elemento))
-            });
-            
+            aon =  strarr2num(aos, ',');
+            atn =  strarr2num(byId('vt'), ',');
+            document.getElementById('vr').value=sum(aon, atn)
             alert(aon[0] + aon[1] + aon[2]);
         }
     </script>
