@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rotación de Vectores en 3D</title>
+<script>
+function rotateVector(vector, angleX, angleY, angleZ) {
+    const radianX = angleX * Math.PI / 180;
+    const radianY = angleY * Math.PI / 180;
+    const radianZ = angleZ * Math.PI / 180;
+
+    const rotationMatrixX = [
+        [1, 0, 0],
+        [0, Math.cos(radianX), -Math.sin(radianX)],
+        [0, Math.sin(radianX), Math.cos(radianX)]
+    ];
+
+    const rotationMatrixY = [
+        [Math.cos(radianY), 0, Math.sin(radianY)],
+        [0, 1, 0],
+        [-Math.sin(radianY), 0, Math.cos(radianY)]
+    ];
+
+    const rotationMatrixZ = [
+        [Math.cos(radianZ), -Math.sin(radianZ), 0],
+        [Math.sin(radianZ), Math.cos(radianZ), 0],
+        [0, 0, 1]
+    ];
+
+    const rotatedVector = multiplyMatrix(rotationMatrixX, multiplyMatrix(rotationMatrixY, multiplyMatrix(rotationMatrixZ, vector)));
+    return rotatedVector;
+}
+
+function multiplyMatrix(matrix, vector) {
+    const result = [0, 0, 0];
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            result[i] += matrix[i][j] * vector[j];
+        }
+    }
+    return result;
+}
+
+function calculateRotation() {
+    const vectorInput = document.getElementById("vector").value.split(",").map(Number);
+    const angleX = parseFloat(document.getElementById("angleX").value);
+    const angleY = parseFloat(document.getElementById("angleY").value);
+    const angleZ = parseFloat(document.getElementById("angleZ").value);
+
+    const rotatedVector = rotateVector(vectorInput, angleX, angleY, angleZ);
+    
+    document.getElementById("result").textContent = "Vector Rotado: [" + rotatedVector.join(", ") + "]";
+}
+</script>
+</head>
+<body>
+<h1>Rotación de Vectores en 3D</h1>
+<p>Ingrese un vector tridimensional (ejemplo: 1, 2, 3) y los ángulos de rotación en grados:</p>
+<input type="text" id="vector" placeholder="Vector (x, y, z)" /><br>
+<input type="text" id="angleX" placeholder="Ángulo X" /><br>
+<input type="text" id="angleY" placeholder="Ángulo Y" /><br>
+<input type="text" id="angleZ" placeholder="Ángulo Z" /><br>
+<button onclick="calculateRotation()">Calcular Rotación</button>
+<p id="result"></p>
+</body>
+</html>

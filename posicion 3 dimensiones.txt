@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Traslación de Vectores en 3D</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+  }
+  .container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  pre {
+    white-space: pre-wrap;
+  }
+</style>
+<script>
+function translateVector(vector, tx, ty, tz) {
+    const translationMatrix = [
+        [1, 0, 0, tx],
+        [0, 1, 0, ty],
+        [0, 0, 1, tz],
+        [0, 0, 0, 1]
+    ];
+
+    const homogeneousVector = [...vector, 1];
+    const result = [];
+
+    for (let i = 0; i < 4; i++) {
+        let sum = 0;
+        for (let j = 0; j < 4; j++) {
+            sum += translationMatrix[i][j] * homogeneousVector[j];
+        }
+        result.push(sum);
+    }
+
+    return result.slice(0, 3); // Discard the homogeneous coordinate
+}
+
+function createTranslationMatrix(tx, ty, tz) {
+    return `| 1   0   0   ${tx} |
+| 0   1   0   ${ty} |
+| 0   0   1   ${tz} |
+| 0   0   0   1   |`;
+}
+
+function calculateTranslation() {
+    const vectorInput = document.getElementById("vector").value.split(",").map(Number);
+    const tx = parseFloat(document.getElementById("tx").value);
+    const ty = parseFloat(document.getElementById("ty").value);
+    const tz = parseFloat(document.getElementById("tz").value);
+
+    const translatedVector = translateVector(vectorInput, tx, ty, tz);
+    const translationMatrix = createTranslationMatrix(tx, ty, tz);
+
+    document.getElementById("translationMatrix").textContent = translationMatrix;
+    document.getElementById("result").textContent = `Vector Trasladado: [${translatedVector.join(", ")}]`;
+}
+</script>
+</head>
+<body>
+<div class="container">
+    <h1>Traslación de Vectores en 3D</h1>
+    <p>Ingrese un vector tridimensional (ejemplo: 1, 2, 3) y las cantidades de traslación en los ejes X, Y y Z:</p>
+    <input type="text" id="vector" placeholder="Vector (x, y, z)" /><br>
+    <input type="text" id="tx" placeholder="Traslación en X" /><br>
+    <input type="text" id="ty" placeholder="Traslación en Y" /><br>
+    <input type="text" id="tz" placeholder="Traslación en Z" /><br>
+    <button onclick="calculateTranslation()">Calcular Traslación</button>
+    <h2>Matriz de Traslación:</h2>
+    <pre id="translationMatrix"></pre>
+    <h2>Resultado:</h2>
+    <p id="result"></p>
+</div>
+</body>
+</html>

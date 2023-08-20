@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Escalado de Vectores en 3D</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+  }
+  .container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  pre {
+    white-space: pre-wrap;
+  }
+</style>
+<script>
+function scaleVector(vector, scaleX, scaleY, scaleZ) {
+    const scalingMatrix = [
+        [scaleX, 0, 0],
+        [0, scaleY, 0],
+        [0, 0, scaleZ]
+    ];
+
+    const result = [];
+
+    for (let i = 0; i < 3; i++) {
+        let sum = 0;
+        for (let j = 0; j < 3; j++) {
+            sum += scalingMatrix[i][j] * vector[j];
+        }
+        result.push(sum);
+    }
+
+    return result;
+}
+
+function createScalingMatrix(scaleX, scaleY, scaleZ) {
+    return `| ${scaleX}   0   0 |
+| 0   ${scaleY}   0 |
+| 0   0   ${scaleZ} |`;
+}
+
+function calculateScaling() {
+    const vectorInput = document.getElementById("vector").value.split(",").map(Number);
+    const scaleX = parseFloat(document.getElementById("scaleX").value);
+    const scaleY = parseFloat(document.getElementById("scaleY").value);
+    const scaleZ = parseFloat(document.getElementById("scaleZ").value);
+
+    const scaledVector = scaleVector(vectorInput, scaleX, scaleY, scaleZ);
+    const scalingMatrix = createScalingMatrix(scaleX, scaleY, scaleZ);
+
+    document.getElementById("scalingMatrix").textContent = scalingMatrix;
+    document.getElementById("result").textContent = `Vector Escalado: [${scaledVector.join(", ")}]`;
+}
+</script>
+</head>
+<body>
+<div class="container">
+    <h1>Escalado de Vectores en 3D</h1>
+    <p>Ingrese un vector tridimensional (ejemplo: 1, 2, 3) y los factores de escala en los ejes X, Y y Z:</p>
+    <input type="text" id="vector" placeholder="Vector (x, y, z)" /><br>
+    <input type="text" id="scaleX" placeholder="Factor de Escala en X" /><br>
+    <input type="text" id="scaleY" placeholder="Factor de Escala en Y" /><br>
+    <input type="text" id="scaleZ" placeholder="Factor de Escala en Z" /><br>
+    <button onclick="calculateScaling()">Calcular Escalado</button>
+    <h2>Matriz de Escalado:</h2>
+    <pre id="scalingMatrix"></pre>
+    <h2>Resultado:</h2>
+    <p id="result"></p>
+</div>
+</body>
+</html>
